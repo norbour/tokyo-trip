@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>东京五天四晚亲子行程 — 6.4-6.8</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    background: #f8f9fa;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%);
+    color: white;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .hero h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+  .hero p { opacity: 0.9; font-size: 0.95rem; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    margin: 0 0.3rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+    color: #1F4E79;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #E8EEF4;
+  }
+  h3 {
+    font-size: 1.1rem;
+    color: #2E75B6;
+    margin: 1.5rem 0 0.8rem;
+  }
+  .info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0 1rem;
+    font-size: 0.92rem;
+  }
+  thead th {
+    background: #1F4E79;
+    color: white;
+    padding: 0.6rem 0.8rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+  thead th:first-child { width: 80px; }
+  thead th:last-child { width: 22%; }
+  tbody td {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid #E8EEF4;
+    vertical-align: top;
+  }
+  tbody td:first-child {
+    text-align: center;
+    font-weight: 500;
+    color: #2E75B6;
+    white-space: nowrap;
+  }
+  tbody td:last-child {
+    color: #7f8c8d;
+    font-size: 0.88rem;
+  }
+  tbody tr:nth-child(even) { background: #fafbfc; }
+  .warn {
+    background: #FFF8E1;
+    border-left: 3px solid #F39C12;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+  }
+  .note {
+    background: #E8F4FD;
+    border-left: 3px solid #2E75B6;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin: 1rem 0;
+  }
+  .bright {
+    background: #F0FFF4;
+    border-left: 3px solid #27AE60;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin: 0.5rem 0;
+  }
+  ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  li { margin-bottom: 0.4rem; font-size: 0.92rem; }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .day-num {
+    background: #2E75B6;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+  .flight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .flight-grid table { margin: 0; }
+  .flight-grid table:first-child { border-right: none; }
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  .checklist li::before {
+    content: "⬜";
+    margin-right: 0.5rem;
+  }
+  .restaurant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.8rem;
+  }
+  .restaurant-card {
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    border: 1px solid #E8EEF4;
+  }
+  .restaurant-card .name { font-weight: 600; color: #2c3e50; }
+  .restaurant-card .note { font-size: 0.85rem; color: #7f8c8d; margin-top: 0.2rem; background: none; border: none; padding: 0; }
+  .glasses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.8rem;
+  }
+  .glasses-card {
+    background: #fafbfc;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #E8EEF4;
+  }
+  .glasses-card .brand { font-weight: 700; font-size: 1.05rem; color: #1F4E79; }
+  .glasses-card .detail { font-size: 0.88rem; color: #555; margin-top: 0.3rem; }
+  .tag {
+    display: inline-block;
+    background: #E8F4FD;
+    color: #2E75B6;
+    padding: 0.15rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-top: 0.3rem;
+  }
+  .tag.warn-tag { background: #FFF8E1; color: #E67E22; }
+  @media (max-width: 640px) {
+    body { padding: 1rem; }
+    table { font-size: 0.82rem; }
+    thead th { padding: 0.4rem; }
+    tbody td { padding: 0.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🗼 东京五天四晚亲子行程</h1>
+  <p>
+    <span class="badge">6.4 — 6.8</span>
+    <span class="badge">羽田 HND</span>
+    <span class="badge">银座基地</span>
+    <span class="badge">一家三口（3 岁半👧）</span>
+  </p>
+</div>
+
+<!-- FLIGHTS -->
+<h2>✈️ 航班信息</h2>
+<div class="info-card">
+  <table>
+    <thead><tr><th>航段</th><th>日期</th><th>航班</th><th>出发</th><th>抵达</th><th>航程</th></tr></thead>
+    <tbody>
+      <tr><td>去程</td><td>6.4</td><td>JL080</td><td>09:05 PVG T1</td><td>13:00 HND T3</td><td>2h55m</td></tr>
+      <tr><td>返程</td><td>6.8</td><td>JL089</td><td>17:20 HND T3</td><td>19:45 PVG T1</td><td>3h25m</td></tr>
+    </tbody>
+  </table>
+  <p style="margin-top:0.5rem;color:#7f8c8d;font-size:0.88rem">日本航空 Boeing 737-800，经济舱，含餐食</p>
+</div>
+
+<!-- HOTEL -->
+<h2>🏨 住宿</h2>
+<div class="info-card">
+  <p><strong>银座名铁穆瑟酒店</strong>（HOTEL MUSSE GINZA MEITETSU）— 已订<br>
+  <span style="color:#7f8c8d;font-size:0.9rem">银座站 / 新桥站步行数分钟</span></p>
+</div>
+
+<!-- WEATHER -->
+<h2>🌧️ 天气预警</h2>
+<div class="warn">
+  六月上旬东京进入梅雨季，20-28°C，湿热，以阵雨和阴天为主。
+  每日行程均配室内备选方案，<strong>晴天户外、雨天秒切</strong>。
+</div>
+
+<!-- DAILY ITINERARY -->
+<h2>📋 每日行程</h2>
+
+<!-- D1 -->
+<div class="info-card">
+  <div class="day-header">
+    <span class="day-num">D1</span>
+    <h3 style="margin:0">6.4（周四）| 抵达 + 配镜 + 筑地</h3>
+  </div>
+  <table>
+    <thead><tr><th>时间</th><th>安排</th><th>雨天</th></tr></thead>
+    <tbody>
+      <tr><td>13:00</td><td>抵达羽田，入关</td><td>—</td></tr>
+      <tr><td>14:00</td><td>银座酒店入住，休整</td><td>—</td></tr>
+      <tr><td>14:30</td><td>999.9 银座本店配镜 <span class="tag warn-tag">⚠ 需提前网上预约</span></td><td>—</td></tr>
+      <tr><td>16:00</td><td>金子眼镜並木通り</td><td>—</td></tr>
+      <tr><td>17:00</td><td>筑地场外市场逛吃——烤海鲜串、玉子烧、抹茶冰淇淋</td><td>筑地一半有顶棚，缩进 GINZA SIX</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- D2 -->
+<div class="info-card">
+  <div class="day-header">
+    <span class="day-num">D2</span>
+    <h3 style="margin:0">6.5（周五）| 三鹰吉卜力 + 吉祥寺</h3>
+  </div>
+  <table>
+    <thead><tr><th>时间</th><th>安排</th><th>雨天</th></tr></thead>
+    <tbody>
+      <tr><td>09:30</td><td>JR 中央线到三鹰，银座出发约 40 分钟</td><td>—</td></tr>
+      <tr><td>10:30</td><td>到达三鹰站，步行/巴士到吉卜力美术馆</td><td>—</td></tr>
+      <tr><td>11:00</td><td>三鹰之森吉卜力美术馆 <span class="tag">🎫 已订</span></td><td>—</td></tr>
+      <tr><td>13:30</td><td>吉卜力继续逛——龙猫巴士、天空之城机器人、屋顶花园</td><td>—</td></tr>
+      <tr><td>14:00</td><td>三鹰→吉祥寺（步行或巴士一站）→口琴横丁午饭</td><td>—</td></tr>
+      <tr><td>16:00</td><td>井之头公园散步→吉祥寺商店街→猫咪咖啡馆→回银座</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <div class="bright">雨天备选：吉卜力美术馆全程室内，吉祥寺口琴横丁有顶棚。井之头公园可缩。</div>
+</div>
+
+<!-- D3 -->
+<div class="info-card">
+  <div class="day-header">
+    <span class="day-num">D3</span>
+    <h3 style="margin:0">6.6（周六）| 池袋 Sunshine City 室内日</h3>
+  </div>
+  <table>
+    <thead><tr><th>时间</th><th>安排</th><th>雨天</th></tr></thead>
+    <tbody>
+      <tr><td>09:30</td><td>地铁丸之内线到池袋，20 分钟</td><td>全天室内，不受影响 ✓</td></tr>
+      <tr><td>10:00</td><td>Sunshine 水族馆——企鹅在城市天际线前面游 <span class="tag warn-tag">⚠ 提前网上购票</span></td><td></td></tr>
+      <tr><td>12:00</td><td>Sunshine City 商场内午饭</td><td></td></tr>
+      <tr><td>13:30</td><td>南梦宫 Namja Town——饺子城 + 甜点区 + 幼儿室内小游戏</td><td></td></tr>
+      <tr><td>16:00</td><td>回酒店补觉</td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- D4 -->
+<div class="info-card">
+  <div class="day-header">
+    <span class="day-num">D4</span>
+    <h3 style="margin:0">6.7（周日）| 谷根千 + 东京玩具美术馆</h3>
+  </div>
+  <table>
+    <thead><tr><th>时间</th><th>安排</th><th>雨天</th></tr></thead>
+    <tbody>
+      <tr><td>09:30</td><td>JR 山手线到日暮里，20 分钟</td><td>—</td></tr>
+      <tr><td>10:00</td><td>谷中銀座商店街——炸肉饼、猫咪甜甜圈、手工仙贝，一路吃一路走</td><td>店铺挨店铺有顶棚</td></tr>
+      <tr><td>11:30</td><td>穿过谷中霊園到根津神社——赤红鸟居隧道，人少安静</td><td>—</td></tr>
+      <tr><td>12:30</td><td>根津老街午饭——手打荞麦面 + 鲷鱼烧</td><td>—</td></tr>
+      <tr><td>14:00</td><td>日暮里→新宿（JR 20分）→<strong>东京玩具美术馆</strong>（四谷三丁目，开到16:00，全木玩具随便摸）</td><td>全员室内，不受影响 ✓</td></tr>
+      <tr><td>16:00</td><td>回酒店休整</td><td>—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- D5 -->
+<div class="info-card">
+  <div class="day-header">
+    <span class="day-num">D5</span>
+    <h3 style="margin:0">6.8（周一）| 墨田水族馆 + 返程</h3>
+  </div>
+  <table>
+    <thead><tr><th>时间</th><th>安排</th><th>雨天</th></tr></thead>
+    <tbody>
+      <tr><td>09:00</td><td>退房寄存行李→押上（浅草线 15 分）→<strong>墨田水族馆</strong>（Skytree 脚下，水母&企鹅，1.5-2h）<span class="tag warn-tag">⚠ 提前购票</span></td><td>Solamachi 商场（Skytree 楼下，室内）</td></tr>
+      <tr><td>11:30</td><td>Solamachi 午饭（Skytree 楼下商场）</td><td>—</td></tr>
+      <tr><td>13:00</td><td>回酒店取行李</td><td>—</td></tr>
+      <tr><td>14:00</td><td>出发去羽田（京急线约 50 分钟）</td><td>—</td></tr>
+      <tr><td>17:20</td><td>✈️ JL089 回上海</td><td>—</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- GLASSES -->
+<h2>👓 配镜 — 银座两家</h2>
+<div class="info-card">
+  <div class="glasses-grid">
+    <div class="glasses-card">
+      <div class="brand">999.9</div>
+      <div class="detail">银座本店（银座 4-3-6）<br>步行 8min</div>
+      <span class="tag warn-tag">必须预约，官网 Reserve Day</span>
+    </div>
+    <div class="glasses-card">
+      <div class="brand">金子眼镜</div>
+      <div class="detail">銀座並木通り店（银座 2-4-17）<br>步行 5min</div>
+      <span class="tag">不用预约，11:00-20:00</span>
+    </div>
+  </div>
+  <div class="note" style="margin-top:1rem">建议先 999.9（时段不等人），出来走两条街到金子。带上现有眼镜对比度数。</div>
+</div>
+
+<!-- RESTAURANTS -->
+<h2>🍜 银座亲子餐厅</h2>
+<div class="info-card">
+  <div class="restaurant-grid">
+    <div class="restaurant-card">
+      <div class="name">🍥 一风堂 银座店</div>
+      <div class="note">宽桌、亲子友好、不踩雷</div>
+    </div>
+    <div class="restaurant-card">
+      <div class="name">🐔 むぎとオリーブ</div>
+      <div class="note">鸡汤拉面，米其林推荐，空间较小</div>
+    </div>
+    <div class="restaurant-card">
+      <div class="name">🏬 东急PLAZA银座 / GINZA SIX</div>
+      <div class="note">选择多、有婴儿室、推车无压力</div>
+    </div>
+    <div class="restaurant-card">
+      <div class="name">🐟 筑地场外市场</div>
+      <div class="note">海鲜丼、烤串、玉子烧</div>
+    </div>
+    <div class="restaurant-card">
+      <div class="name">🏪 7-11 / FamilyMart</div>
+      <div class="note">女儿的牛奶、零食随时</div>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSPORT -->
+<h2>🚃 交通攻略</h2>
+<div class="info-card">
+  <ul>
+    <li><strong>买 Suica 卡</strong>：羽田到达大厅即可办理，一人一张</li>
+    <li><strong>Google Maps 开无障碍模式</strong>：筛选轮椅友好路线，规划全带电梯的站口</li>
+    <li><strong>避开早晚高峰</strong>：7:30-9:30 / 17:00-19:00 地铁极挤</li>
+    <li><strong>婴儿车不用折叠</strong>：日本地铁允许推车上车，找「ベビーカー」标识区</li>
+    <li><strong>随身带个背带</strong>：万一赶上人多或楼梯站，背上就走</li>
+  </ul>
+</div>
+
+<!-- GEAR -->
+<h2>🎒 装备清单</h2>
+<div class="info-card">
+  <ul>
+    <li><strong>防雨三件套</strong>：折叠伞 ×2、婴儿车防雨罩、每人一件薄防水外套</li>
+    <li><strong>温差装备</strong>：商场冷气强，带一件薄开衫给女儿</li>
+    <li><strong>鞋子</strong>：带易脱的，女儿多带一双袜子</li>
+    <li><strong>婴儿车</strong>：轻便折叠款，东京逛街神器</li>
+    <li><strong>网络</strong>：提前买 eSIM 或租 Wi-Fi 蛋</li>
+  </ul>
+</div>
+
+<!-- TODO -->
+<h2>✅ 出发前必须搞定</h2>
+<div class="info-card">
+  <ul class="checklist">
+    <li>999.9 银座本店官网预约 — 6.4 下午 14:30 时段</li>
+    <li>Sunshine 水族馆网上购票 — 6.6 周六</li>
+    <li>三鹰之森吉卜力美术馆 — 6.5 周五 11:00（已订 ✅）</li>
+    <li>墨田水族馆网上购票 — 6.8 周一</li>
+  </ul>
+</div>
+
+</body>
+</html>
