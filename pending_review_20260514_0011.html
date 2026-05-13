@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>东京行程待确认清单 — 6.4-6.8</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    background: #f8f9fa;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+  .hero {
+    background: linear-gradient(135deg, #C0392B 0%, #E67E22 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 14px;
+    margin-bottom: 2rem;
+  }
+  .hero h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+  .hero p { opacity: 0.95; font-size: 0.9rem; }
+  h2 {
+    font-size: 1.25rem;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #E8EEF4;
+  }
+  h2.fatal { color: #C0392B; border-color: #F5B7B1; }
+  h2.important { color: #D35400; border-color: #F5CBA7; }
+  h2.detail { color: #2471A3; border-color: #AED6F1; }
+  h2.user-verify { color: #6C3483; border-color: #D2B4DE; }
+  .item {
+    background: white;
+    border-radius: 10px;
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border-left: 4px solid #ccc;
+  }
+  .item.fatal { border-left-color: #C0392B; }
+  .item.important { border-left-color: #E67E22; }
+  .item.detail { border-left-color: #2E86C1; }
+  .item.user-verify { border-left-color: #8E44AD; }
+  .item-title {
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: #1F2937;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .item-title .tag-day {
+    background: #1F4E79;
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+  .item-title input[type=checkbox] {
+    margin-top: 0.35rem;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: #27AE60;
+    cursor: pointer;
+  }
+  .evidence {
+    background: #F4F6F8;
+    border-left: 3px solid #7F8C8D;
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    margin: 0.6rem 0;
+    color: #34495e;
+  }
+  .evidence strong { color: #1F2937; }
+  .suggestion {
+    background: #E8F8EF;
+    border-left: 3px solid #27AE60;
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin: 0.6rem 0;
+  }
+  .decision {
+    background: #FFF8E1;
+    border-left: 3px solid #F39C12;
+    padding: 0.6rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin: 0.6rem 0;
+  }
+  .timeline {
+    background: #F8F9FA;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    padding: 0.8rem 1rem;
+    border-radius: 6px;
+    margin: 0.6rem 0;
+    border: 1px solid #E8EEF4;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .options {
+    margin: 0.5rem 0 0 1.5rem;
+  }
+  .options li {
+    padding: 0.3rem 0;
+    font-size: 0.9rem;
+  }
+  .options label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .options input[type=radio] {
+    margin-top: 0.3rem;
+    accent-color: #2E86C1;
+    cursor: pointer;
+  }
+  .note-input {
+    width: 100%;
+    min-height: 2.5rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid #E8EEF4;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+  .note-input::placeholder { color: #B0BEC5; }
+  .summary-bar {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(6px);
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+  }
+  .summary-bar .counter { font-weight: 600; color: #27AE60; }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    font-size: 0.82rem;
+  }
+  .legend span {
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    border: 1px solid;
+  }
+  .legend .fatal { background:#FDECEA;color:#C0392B;border-color:#F5B7B1; }
+  .legend .important { background:#FEF5E7;color:#D35400;border-color:#F5CBA7; }
+  .legend .detail { background:#EBF5FB;color:#2471A3;border-color:#AED6F1; }
+  .legend .user-verify { background:#F4ECF7;color:#6C3483;border-color:#D2B4DE; }
+  .src {
+    font-size: 0.8rem;
+    color: #7F8C8D;
+    margin-top: 0.3rem;
+  }
+  .src a { color: #2E86C1; text-decoration: none; }
+  .src a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    body { padding: 1rem; }
+    .hero { padding: 1.5rem; }
+    .item { padding: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>📋 东京行程待确认清单</h1>
+  <p>6.4-6.8 亲子行程核实与决策待办 · 生成于 2026-05-14</p>
+  <div class="legend">
+    <span class="fatal">🚨 致命 3</span>
+    <span class="important">⚠️ 重要 5</span>
+    <span class="detail">💡 细节 3</span>
+    <span class="user-verify">🔍 待你核实 2</span>
+  </div>
+</div>
+
+<div class="summary-bar">
+  <span>勾选完成的项目以跟踪进度</span>
+  <span class="counter" id="counter">0 / 13 已确认</span>
+</div>
+
+<!-- ============ 致命 ============ -->
+<h2 class="fatal">🚨 致命（必须改）</h2>
+
+<div class="item fatal">
+  <div class="item-title">
+    <input type="checkbox" data-id="f1">
+    <span class="tag-day">D1</span>
+    <span>1. 13:00 落地 → 14:30 999.9 预约，时间根本不够</span>
+  </div>
+  <div class="evidence">
+    <strong>依据：</strong>羽田国际线入境官方平均 <strong>1.5-2 小时</strong>（非高峰），含检疫→入境审查→取行李→海关→办 Suica→京急线到东银座。
+    <div class="src">来源：JAL 官方入境指南、羽田官方空港流程、多家路线指南一致</div>
+  </div>
+  <div class="timeline">13:00 落地滑行到廊桥        ≈ 10 min
+13:10 下机→检疫→入境         ≈ 45-60 min
+14:00 取行李+海关            ≈ 15-20 min
+14:20 买 Suica / 上京急      ≈ 20 min
+14:40 京急→浅草线到东银座     ≈ 40 min
+15:20 到东银座，走酒店+寄存    ≈ 15 min
+15:35 步行到 999.9           ≈  8 min
+─────────────────────────────────────
+15:45 实际最早到 999.9 — 比预约晚 75 分钟</div>
+  <div class="suggestion">
+    <strong>建议：</strong>999.9 预约改到 <strong>16:30 或 17:00</strong>（营业到 20:00），金子当天不安排，顺延到次日。
+  </div>
+  <div class="decision">
+    <strong>待决策：</strong>你怎么处理 D1 下午？
+    <ul class="options">
+      <li><label><input type="radio" name="f1-decision">999.9 改 17:00，金子顺延到 D2 上午</label></li>
+      <li><label><input type="radio" name="f1-decision">999.9 改 16:30，金子改 D2 下午（取镜顺路）</label></li>
+      <li><label><input type="radio" name="f1-decision">配镜全部后移，D1 只做 check-in + 银座晚餐</label></li>
+    </ul>
+    <textarea class="note-input" placeholder="其他想法 / 备注..."></textarea>
+  </div>
+</div>
+
+<div class="item fatal">
+  <div class="item-title">
+    <input type="checkbox" data-id="f2">
+    <span class="tag-day">全程</span>
+    <span>2. 配镜取货在 5 天行程里完全没预留时间</span>
+  </div>
+  <div class="evidence">
+    <strong>依据：</strong>你在小红书查到 999.9 <strong>最快 3 天</strong>、金子 <strong>最快次日</strong>。
+    若 D1 下午配镜：
+    <ul style="margin-top:0.3rem;padding-left:1.2rem">
+      <li>金子：最早 <strong>D2 (6.5) 下午</strong>可取</li>
+      <li>999.9：最早 <strong>D4 (6.7) 下午</strong>可取</li>
+    </ul>
+  </div>
+  <div class="suggestion">
+    <strong>建议取货时段：</strong>
+    <ul style="margin-top:0.3rem;padding-left:1.2rem">
+      <li>金子：D2 或 D3 傍晚回酒店前顺路（银座站步行 5 min，营业到 20:00，火曜定休）</li>
+      <li>999.9：D4 下午谷根千回来后 → 银座取镜</li>
+    </ul>
+  </div>
+  <div class="decision">
+    <strong>待你向两家门店确认（或小红书核实）：</strong>
+    <ul class="options">
+      <li><label><input type="checkbox">999.9 是否支持"邮寄到酒店"（之前搜到有"现在不邮寄"的反馈，2026 最新？）</label></li>
+      <li><label><input type="checkbox">金子是否支持邮寄到酒店</label></li>
+      <li><label><input type="checkbox">两家实际加工时长（到店后再核定，作最终排期依据）</label></li>
+    </ul>
+    <textarea class="note-input" placeholder="门店实际答复 / 小红书最新情报..."></textarea>
+  </div>
+</div>
+
+<div class="item fatal">
+  <div class="item-title">
+    <input type="checkbox" data-id="f3">
+    <span class="tag-day">D4</span>
+    <span>3. 日暮里→东京玩具美术馆 路线写错了</span>
+  </div>
+  <div class="evidence">
+    <strong>依据：</strong>玩具美术馆在<strong>四谷三丁目（丸之内线）</strong>，不是新宿。当前行程写"新宿（JR 20 分）"既绕路又还得再换线。
+  </div>
+  <div class="suggestion">
+    <strong>正确路线（约 25-30 分）：</strong>
+    <ul style="margin-top:0.3rem;padding-left:1.2rem">
+      <li>日暮里 JR 山手线 → 秋叶原（8 min）→ 丸之内线 → 四谷三丁目（10 min）</li>
+      <li>或：日暮里 → 西日暮里换千代田线 → 大手町 → 丸之内线 → 四谷三丁目</li>
+    </ul>
+  </div>
+  <div class="decision">
+    <strong>待决策：</strong>需我直接改 index.html 对应行文吗？
+    <ul class="options">
+      <li><label><input type="radio" name="f3-decision">好，直接改为"日暮里→四谷三丁目 约 30 分（秋叶原换丸之内线）"</label></li>
+      <li><label><input type="radio" name="f3-decision">先不改，我自己再斟酌路线</label></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ 重要 ============ -->
+<h2 class="important">⚠️ 重要（强烈建议）</h2>
+
+<div class="item important">
+  <div class="item-title">
+    <input type="checkbox" data-id="i1">
+    <span class="tag-day">D4</span>
+    <span>4. 玩具美术馆只留 2 小时太紧</span>
+  </div>
+  <div class="evidence">
+    <strong>已核实官方：</strong>10:00-16:00，<strong>最终入场 15:30</strong>，周四休馆（6.7 周日正常开）。展品 10,000+ 件 / 多体验馆。
+  </div>
+  <div class="suggestion">
+    <strong>建议：</strong>D4 整体提前 1 小时（见下条"时间表重排"），13:00 前到玩具美术馆，留 3 小时。
+  </div>
+</div>
+
+<div class="item important">
+  <div class="item-title">
+    <input type="checkbox" data-id="i2">
+    <span class="tag-day">D4</span>
+    <span>5. 谷中银座早上 10:00 大多店铺未开 → D4 整体推迟 1 小时</span>
+  </div>
+  <div class="evidence">
+    <strong>依据：</strong>谷中银座店铺普遍 <strong>11:00 后开门</strong>（老街商店惯例）。猫咪甜甜圈、炸肉饼、手工仙贝几乎都 11 点起。
+  </div>
+  <div class="suggestion">
+    <strong>建议 D4 重排：</strong>
+    <div class="timeline">10:30 出发
+11:00 日暮里
+11:30 谷中银座（店铺开齐）
+13:00 根津神社 + 午饭
+14:00 四谷三丁目
+14:30 玩具美术馆（留 3 小时到 15:30 最终入场 + 闭馆）
+17:00 回银座（顺路取金子/999.9 镜）</div>
+  </div>
+  <div class="decision">
+    <ul class="options">
+      <li><label><input type="radio" name="i2-decision">采用新排程，我来改 index.html</label></li>
+      <li><label><input type="radio" name="i2-decision">只改店铺开门时间提示，时间表不动</label></li>
+      <li><label><input type="radio" name="i2-decision">保持原样</label></li>
+    </ul>
+  </div>
+</div>
+
+<div class="item important">
+  <div class="item-title">
+    <input type="checkbox" data-id="i3">
+    <span class="tag-day">D3</span>
+    <span>6. Namja Town 对 3.5 岁娃不是最优选</span>
+  </div>
+  <div class="evidence">
+    <strong>口碑核实：</strong>
+    <ul style="margin-top:0.3rem;padding-left:1.2rem">
+      <li>✓ 3 岁以下免费</li>
+      <li>✗ 大部分项目是<strong>クイズ（猜谜）形式</strong>，3.5 岁理解不了</li>
+      <li>✗ 有反馈"规则严（不能跑 / 不能哭），对幼儿冷淡"</li>
+      <li>✗ 乘坐类项目少</li>
+    </ul>
+  </div>
+  <div class="suggestion">
+    <strong>Sunshine City 内可替代（不用出门）：</strong>
+    <ul style="margin-top:0.3rem;padding-left:1.2rem">
+      <li><strong>KONICA MINOLTA Planetarium 満天</strong> — 室内星空馆，有儿童场次</li>
+      <li><strong>Pokémon Center Mega Tokyo</strong> — 2F，女儿可能更喜欢</li>
+      <li>或直接回酒店补觉 + 取金子镜</li>
+    </ul>
+  </div>
+  <div class="decision">
+    <ul class="options">
+      <li><label><input type="radio" name="i3-decision">换 Planetarium 満天</label></li>
+      <li><label><input type="radio" name="i3-decision">换 Pokémon Center + 商场逛逛</label></li>
+      <li><label><input type="radio" name="i3-decision">直接回酒店补觉 + 去金子取镜</label></li>
+      <li><label><input type="radio" name="i3-decision">保留 Namja Town（女儿可能喜欢，赌一把）</label></li>
+    </ul>
+    <textarea class="note-input" placeholder="你查过小红书的话，反馈如何..."></textarea>
+  </div>
+</div>
+
+<div class="item important">
+  <div class="item-title">
+    <input type="checkbox" data-id="i4">
+    <span class="tag-day">D5</span>
+    <span>7. 押上投币柜周末旺季可能满</span>
+  </div>
+  <div class="evidence">
+    <strong>已核实：</strong>押上 6 处投币柜，大号 700 日元可放 28 寸。但 6.8 周一叠加 Skytree 常驻客流仍有风险。
+    <div class="src">Spacer.co.jp/base/op-252/ 可查实时空位 + 预约</div>
+  </div>
+  <div class="suggestion">
+    <strong>三个选项，风险递减：</strong>
+    <ol style="margin-top:0.3rem;padding-left:1.2rem">
+      <li>出发前用 Spacer 预约大号柜（最稳）</li>
+      <li>备选：Solamachi 内 Cloakroom（收费人工寄存，容量大）</li>
+      <li>终极方案：前一天用 <strong>Yamato 宅急便</strong>把大行李从酒店直送羽田机场（¥2000-3000/件，前一晚办）</li>
+    </ol>
+  </div>
+  <div class="decision">
+    <ul class="options">
+      <li><label><input type="radio" name="i4-decision">用 Spacer 预约</label></li>
+      <li><label><input type="radio" name="i4-decision">用 Solamachi Cloakroom 备案</label></li>
+      <li><label><input type="radio" name="i4-decision">走 Yamato 宅急便（最省事）</label></li>
+      <li><label><input type="radio" name="i4-decision">先到现场再说</label></li>
+    </ul>
+  </div>
+</div>
+
+<div class="item important">
+  <div class="item-title">
+    <input type="checkbox" data-id="i5">
+    <span class="tag-day">D3</span>
+    <span>8. Sunshine 水族馆周六必须买"日時指定券"</span>
+  </div>
+  <div class="evidence">
+    <strong>官方公告原文：</strong>「土日祝日および特定日は、入場制限を行う場合がございますので、<strong>事前予約(日時指定)</strong>をおすすめします」
+  </div>
+  <div class="suggestion">
+    <strong>建议：</strong>checklist 里明确写"<strong>日時指定券 9:30-10:00 时段</strong>"（而不是普通 e-票）
+  </div>
+  <div class="decision">
+    <ul class="options">
+      <li><label><input type="radio" name="i5-decision">改 checklist 文案</label></li>
+      <li><label><input type="radio" name="i5-decision">保持原样</label></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ============ 细节 ============ -->
+<h2 class="detail">💡 细节（锦上添花）</h2>
+
+<div class="item detail">
+  <div class="item-title">
+    <input type="checkbox" data-id="d1">
+    <span class="tag-day">D2</span>
+    <span>9. 吉祥寺午饭 14:00 偏晚，娃会饿</span>
+  </div>
+  <div class="evidence">
+    吉卜力官方建议停留约 2 小时。11:00 入场 → 13:00 离开合理。当前 13:30 还在馆内 → 14:00 口琴横丁。
+  </div>
+  <div class="suggestion">
+    13:00 出馆 → 13:30 口琴横丁午饭。三鹰→吉祥寺可坐官方<strong>猫巴士</strong>（3 min）或走路穿井之头公园（15 min）。
+  </div>
+</div>
+
+<div class="item detail">
+  <div class="item-title">
+    <input type="checkbox" data-id="d2">
+    <span class="tag-day">D4</span>
+    <span>10. 根津神社 6 月没什么看点</span>
+  </div>
+  <div class="evidence">
+    <strong>已核实：</strong>杜鹃花季 4 月中-5 月初结束，<strong>6 月已闭园</strong>。6 月只剩一般参拜功能，对 3.5 岁娃吸引力有限。
+  </div>
+  <div class="suggestion">
+    保留做路过打卡（15 分钟），重心放在谷中银座和玩具美术馆。
+  </div>
+</div>
+
+<div class="item detail">
+  <div class="item-title">
+    <input type="checkbox" data-id="d3">
+    <span class="tag-day">D1</span>
+    <span>11. 银座名铁穆瑟酒店 — 可争取 early check-in</span>
+  </div>
+  <div class="suggestion">
+    到店时问一句 "Is early check-in available?"，很多酒店下午房间清完就给。省去行李 desk 流程。
+  </div>
+</div>
+
+<!-- ============ 用户核实 ============ -->
+<h2 class="user-verify">🔍 待你核实（我查不到）</h2>
+
+<div class="item user-verify">
+  <div class="item-title">
+    <input type="checkbox" data-id="u1">
+    <span class="tag-day">D3</span>
+    <span>12. Sunshine 水族馆 6 月周六具体开门时间</span>
+  </div>
+  <div class="evidence">
+    官方页面用 JS 动态加载，WebFetch 抓不到。小红书普遍反馈"春夏 9:30 开门"但需以官网当周实际公示为准。
+  </div>
+  <div class="decision">
+    <textarea class="note-input" placeholder="核实后填入：开门时间 / 来源..."></textarea>
+  </div>
+</div>
+
+<div class="item user-verify">
+  <div class="item-title">
+    <input type="checkbox" data-id="u2">
+    <span class="tag-day">配镜</span>
+    <span>13. 999.9 / 金子 镜片邮寄政策 2026</span>
+  </div>
+  <div class="evidence">
+    之前搜到有"999.9 现在不给邮寄"的小红书反馈；金子不确定。两家门店亲自问最可靠。直接影响取货流程设计。
+  </div>
+  <div class="decision">
+    <textarea class="note-input" placeholder="999.9 门店答复 / 金子门店答复..."></textarea>
+  </div>
+</div>
+
+<script>
+(function() {
+  var checkboxes = document.querySelectorAll('input[type=checkbox][data-id]');
+  var counter = document.getElementById('counter');
+  function update() {
+    var checked = 0;
+    checkboxes.forEach(function(cb) { if (cb.checked) checked++; });
+    counter.textContent = checked + ' / ' + checkboxes.length + ' 已确认';
+    // Persist to localStorage
+    var state = {};
+    checkboxes.forEach(function(cb) { state[cb.dataset.id] = cb.checked; });
+    try { localStorage.setItem('tokyo-review-state', JSON.stringify(state)); } catch(e) {}
+  }
+  // Restore
+  try {
+    var saved = JSON.parse(localStorage.getItem('tokyo-review-state') || '{}');
+    checkboxes.forEach(function(cb) { if (saved[cb.dataset.id]) cb.checked = true; });
+  } catch(e) {}
+  checkboxes.forEach(function(cb) { cb.addEventListener('change', update); });
+  update();
+})();
+</script>
+
+</body>
+</html>
