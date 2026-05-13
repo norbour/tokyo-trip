@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>东京五天四晚亲子行程 — 6.4-6.8</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -184,17 +186,40 @@
     margin-top: 0.3rem;
   }
   .tag.warn-tag { background: #FFF8E1; color: #E67E22; }
-  .map-wrap {
-    margin-top: 1rem;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid #E8EEF4;
-  }
-  .map-wrap iframe {
+
+  /* --- Map section --- */
+  .map-section { margin-bottom: 2rem; }
+  .map-section h2 { margin-bottom: 0.5rem; }
+  #trip-map {
     width: 100%;
-    height: 340px;
-    border: 0;
-    display: block;
+    height: 520px;
+    border-radius: 12px;
+    border: 1px solid #E8EEF4;
+    z-index: 1;
+  }
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+    font-size: 0.82rem;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity .2s;
+  }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    flex-shrink: 0;
   }
   .map-links {
     display: flex;
@@ -213,11 +238,32 @@
     transition: background .2s;
   }
   .map-links a:hover { background: #d0e8f8; }
+
+  .leaflet-popup-content { font-size: 0.9rem; line-height: 1.5; }
+  .leaflet-popup-content strong { color: #1F4E79; }
+  .leaflet-popup-content .popup-meta { color: #7f8c8d; font-size: 0.8rem; margin-top: 0.2rem; }
+
+  /* Custom marker styles */
+  .marker-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 2.5px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  }
+
   @media (max-width: 640px) {
     body { padding: 1rem; }
     table { font-size: 0.82rem; }
     thead th { padding: 0.4rem; }
     tbody td { padding: 0.4rem; }
+    #trip-map { height: 360px; }
   }
 </style>
 </head>
@@ -231,6 +277,13 @@
     <span class="badge">银座基地</span>
     <span class="badge">一家三口（3 岁半👧）</span>
   </p>
+</div>
+
+<!-- MAP -->
+<div class="map-section">
+  <h2>🗺️ 行程地图</h2>
+  <div id="trip-map"></div>
+  <div class="map-legend" id="legend"></div>
 </div>
 
 <!-- FLIGHTS -->
@@ -279,15 +332,6 @@
       <tr><td>17:00</td><td>筑地场外市场逛吃——烤海鲜串、玉子烧、抹茶冰淇淋</td><td>筑地一半有顶棚，缩进 GINZA SIX</td></tr>
     </tbody>
   </table>
-  <div class="map-wrap">
-    <iframe src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyB0wWy05iBV0Axu5HynO0vg5pOCDM4JHvI&origin=Haneda+Airport+Tokyo&destination=Tsukiji+Market+Tokyo&waypoints=HOTEL+MUSSE+GINZA+MEITETSU|999.9+Ginza|Kaneko+Optical+Ginza&mode=transit&language=zh-CN"></iframe>
-  </div>
-  <div class="map-links">
-    <a href="https://maps.google.com/?q=HOTEL+MUSSE+GINZA+MEITETSU+Tokyo" target="_blank">🏨 酒店</a>
-    <a href="https://maps.google.com/?q=999.9+Ginza+Tokyo" target="_blank">👓 999.9</a>
-    <a href="https://maps.google.com/?q=Kaneko+Optical+Ginza+Tokyo" target="_blank">👓 金子眼镜</a>
-    <a href="https://maps.google.com/?q=Tsukiji+Market+Tokyo" target="_blank">🐟 筑地</a>
-  </div>
 </div>
 
 <!-- D2 -->
@@ -308,14 +352,6 @@
     </tbody>
   </table>
   <div class="bright">雨天备选：吉卜力美术馆全程室内，吉祥寺口琴横丁有顶棚。井之头公园可缩。</div>
-  <div class="map-wrap">
-    <iframe src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyB0wWy05iBV0Axu5HynO0vg5pOCDM4JHvI&origin=Ginza+Tokyo&destination=Kichijoji+Tokyo&waypoints=Mitaka+Ghibli+Museum&mode=transit&language=zh-CN"></iframe>
-  </div>
-  <div class="map-links">
-    <a href="https://maps.google.com/?q=Ghibli+Museum+Mitaka+Tokyo" target="_blank">🏛️ 吉卜力</a>
-    <a href="https://maps.google.com/?q=Harmonica+Yokocho+Kichijoji+Tokyo" target="_blank">🍢 口琴横丁</a>
-    <a href="https://maps.google.com/?q=Inokashira+Park+Tokyo" target="_blank">🌿 井之头公园</a>
-  </div>
 </div>
 
 <!-- D3 -->
@@ -334,14 +370,6 @@
       <tr><td>16:00</td><td>回酒店补觉</td><td></td></tr>
     </tbody>
   </table>
-  <div class="map-wrap">
-    <iframe src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyB0wWy05iBV0Axu5HynO0vg5pOCDM4JHvI&origin=Ginza+Tokyo&destination=Sunshine+City+Ikebukuro+Tokyo&mode=transit&language=zh-CN"></iframe>
-  </div>
-  <div class="map-links">
-    <a href="https://maps.google.com/?q=Sunshine+Aquarium+Ikebukuro+Tokyo" target="_blank">🐧 水族馆</a>
-    <a href="https://maps.google.com/?q=Sunshine+City+Ikebukuro+Tokyo" target="_blank">🛍️ Sunshine City</a>
-    <a href="https://maps.google.com/?q=Namja+Town+Ikebukuro+Tokyo" target="_blank">🎮 Namja Town</a>
-  </div>
 </div>
 
 <!-- D4 -->
@@ -361,14 +389,6 @@
       <tr><td>16:00</td><td>回酒店休整</td><td>—</td></tr>
     </tbody>
   </table>
-  <div class="map-wrap">
-    <iframe src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyB0wWy05iBV0Axu5HynO0vg5pOCDM4JHvI&origin=Ginza+Tokyo&destination=Tokyo+Toy+Museum+Yotsuya&waypoints=Nippori+Station|Yanaka+Ginza|Nezu+Shrine&mode=transit&language=zh-CN"></iframe>
-  </div>
-  <div class="map-links">
-    <a href="https://maps.google.com/?q=Yanaka+Ginza+Tokyo" target="_blank">🛍️ 谷中银座</a>
-    <a href="https://maps.google.com/?q=Nezu+Shrine+Tokyo" target="_blank">⛩️ 根津神社</a>
-    <a href="https://maps.google.com/?q=Tokyo+Toy+Museum+Yotsuya" target="_blank">🧸 玩具美术馆</a>
-  </div>
 </div>
 
 <!-- D5 -->
@@ -387,14 +407,6 @@
       <tr><td>17:20</td><td>✈️ JL089 回上海</td><td>—</td></tr>
     </tbody>
   </table>
-  <div class="map-wrap">
-    <iframe src="https://www.google.com/maps/embed/v1/directions?key=AIzaSyB0wWy05iBV0Axu5HynO0vg5pOCDM4JHvI&origin=Ginza+Tokyo&destination=Haneda+Airport+Tokyo&waypoints=Tokyo+Skytree+Sumida+Aquarium&mode=transit&language=zh-CN"></iframe>
-  </div>
-  <div class="map-links">
-    <a href="https://maps.google.com/?q=Sumida+Aquarium+Tokyo+Skytree" target="_blank">🐧 墨田水族馆</a>
-    <a href="https://maps.google.com/?q=Tokyo+Solamachi" target="_blank">🛍️ Solamachi</a>
-    <a href="https://maps.google.com/?q=Haneda+Airport+Terminal+3" target="_blank">✈️ 羽田 T3</a>
-  </div>
 </div>
 
 <!-- GLASSES -->
@@ -476,6 +488,124 @@
     <li>墨田水族馆网上购票 — 6.8 周一</li>
   </ul>
 </div>
+
+<script>
+(function() {
+  var map = L.map('trip-map', { scrollWheelZoom: true }).setView([35.688, 139.75], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>',
+    maxZoom: 19
+  }).addTo(map);
+
+  var dayColors = {
+    d1: '#E74C3C',
+    d2: '#27AE60',
+    d3: '#8E44AD',
+    d4: '#2980B9',
+    d5: '#F39C12'
+  };
+
+  var dayNames = {
+    d1: 'D1 抵达+配镜+筑地',
+    d2: 'D2 吉卜力+吉祥寺',
+    d3: 'D3 池袋 Sunshine',
+    d4: 'D4 谷根千+玩具美术馆',
+    d5: 'D5 墨田水族馆+返程'
+  };
+
+  var locations = [
+    // D1
+    { day:'d1', name:'银座名铁穆瑟酒店', emoji:'🏨', lat:35.6720, lng:139.7640, note:'住宿基地，银座站旁' },
+    { day:'d1', name:'999.9 银座本店', emoji:'👓', lat:35.6725, lng:139.7655, note:'6.4 14:30，官网预约' },
+    { day:'d1', name:'金子眼镜 並木通り', emoji:'👓', lat:35.6716, lng:139.7668, note:'不用预约，11:00-20:00' },
+    { day:'d1', name:'筑地场外市场', emoji:'🐟', lat:35.6654, lng:139.7715, note:'海鲜串、玉子烧、抹茶冰淇淋' },
+    // D2
+    { day:'d2', name:'三鹰吉卜力美术馆', emoji:'🏛️', lat:35.6962, lng:139.5701, note:'6.5 11:00 已订', special:true },
+    { day:'d2', name:'口琴横丁', emoji:'🍢', lat:35.7040, lng:139.5810, note:'吉祥寺老商店街，有顶棚' },
+    { day:'d2', name:'井之头公园', emoji:'🌿', lat:35.7000, lng:139.5750, note:'散步+猫咪咖啡馆' },
+    // D3
+    { day:'d3', name:'Sunshine 水族馆', emoji:'🐧', lat:35.7290, lng:139.7160, note:'企鹅+天际线，网上购票' },
+    { day:'d3', name:'Sunshine City', emoji:'🛍️', lat:35.7293, lng:139.7175, note:'商场午饭' },
+    { day:'d3', name:'Namja Town', emoji:'🎮', lat:35.7290, lng:139.7185, note:'饺子城+甜点区+幼儿游戏' },
+    // D4
+    { day:'d4', name:'日暮里站', emoji:'🚉', lat:35.7285, lng:139.7720, note:'JR山手线，谷根千入口' },
+    { day:'d4', name:'谷中銀座', emoji:'🛍️', lat:35.7275, lng:139.7660, note:'炸肉饼、猫咪甜甜圈、手工仙贝' },
+    { day:'d4', name:'根津神社', emoji:'⛩️', lat:35.7198, lng:139.7605, note:'赤红鸟居隧道，人少安静' },
+    { day:'d4', name:'东京玩具美术馆', emoji:'🧸', lat:35.6885, lng:139.7220, note:'四谷三丁目，开到16:00', special:true },
+    // D5
+    { day:'d5', name:'墨田水族馆', emoji:'🐧', lat:35.7100, lng:139.8100, note:'Skytree脚下，水母&企鹅' },
+    { day:'d5', name:'Solamachi', emoji:'🛍️', lat:35.7105, lng:139.8120, note:'Skytree楼下商场，午饭' },
+    { day:'d5', name:'羽田机场 T3', emoji:'✈️', lat:35.5494, lng:139.7798, note:'6.8 JL089 17:20返程', special:true },
+  ];
+
+  var markerGroup = {};
+
+  function createMarkerIcon(day, emoji) {
+    var color = dayColors[day] || '#999';
+    return L.divIcon({
+      className: '',
+      html: '<div class="marker-icon" style="background:'+color+'">'+emoji+'</div>',
+      iconSize: [28, 28],
+      iconAnchor: [14, 14],
+      popupAnchor: [0, -16]
+    });
+  }
+
+  locations.forEach(function(loc) {
+    var icon = createMarkerIcon(loc.day, loc.emoji);
+    var marker = L.marker([loc.lat, loc.lng], { icon: icon }).addTo(map);
+    var sizeClass = loc.special ? 'style="font-size:1.05rem"' : '';
+    marker.bindPopup(
+      '<strong '+sizeClass+'>' + loc.name + '</strong>' +
+      '<br><span class="popup-meta">' + dayNames[loc.day] + '</span>' +
+      (loc.note ? '<br><span class="popup-meta">' + loc.note + '</span>' : '')
+    );
+    if (!markerGroup[loc.day]) markerGroup[loc.day] = [];
+    markerGroup[loc.day].push(marker);
+  });
+
+  // Build legend
+  var legendHtml = '<span style="font-weight:600;margin-right:0.3rem">按天筛选：</span>';
+  var allItem = document.createElement('span');
+  allItem.className = 'legend-item';
+  allItem.innerHTML = '<span class="legend-dot" style="background:#555"></span>全部';
+  allItem.onclick = function() { showAll(); };
+  document.getElementById('legend').appendChild(allItem);
+
+  Object.keys(dayNames).forEach(function(day) {
+    var item = document.createElement('span');
+    item.className = 'legend-item';
+    item.setAttribute('data-day', day);
+    item.innerHTML = '<span class="legend-dot" style="background:'+dayColors[day]+'"></span>'+dayNames[day];
+    item.onclick = function() { filterDay(day); };
+    document.getElementById('legend').appendChild(item);
+  });
+
+  function showAll() {
+    Object.values(markerGroup).forEach(function(g) {
+      g.forEach(function(m) { map.addLayer(m); });
+    });
+    document.querySelectorAll('.legend-item').forEach(function(el) { el.classList.remove('dimmed'); });
+    map.setView([35.688, 139.75], 12);
+  }
+
+  function filterDay(day) {
+    Object.keys(markerGroup).forEach(function(k) {
+      markerGroup[k].forEach(function(m) {
+        if (k === day) map.addLayer(m); else map.removeLayer(m);
+      });
+    });
+    document.querySelectorAll('.legend-item[data-day]').forEach(function(el) {
+      if (el.getAttribute('data-day') === day) el.classList.remove('dimmed'); else el.classList.add('dimmed');
+    });
+    // Fit bounds to visible markers
+    var group = L.featureGroup(markerGroup[day]);
+    if (group.getBounds().isValid()) map.fitBounds(group.getBounds().pad(0.15));
+    else map.setView([35.688, 139.75], 12);
+  }
+})();
+</script>
 
 </body>
 </html>
