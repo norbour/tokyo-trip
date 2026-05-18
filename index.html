@@ -221,29 +221,11 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
     flex-shrink: 0;
   }
-  .map-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 0.6rem;
-    font-size: 0.82rem;
-  }
-  .map-links a {
-    color: #2E75B6;
-    text-decoration: none;
-    background: #E8F4FD;
-    padding: 0.25rem 0.7rem;
-    border-radius: 14px;
-    white-space: nowrap;
-    transition: background .2s;
-  }
-  .map-links a:hover { background: #d0e8f8; }
 
   .leaflet-popup-content { font-size: 0.9rem; line-height: 1.5; }
   .leaflet-popup-content strong { color: #1F4E79; }
   .leaflet-popup-content .popup-meta { color: #7f8c8d; font-size: 0.8rem; margin-top: 0.2rem; }
 
-  /* Custom marker styles */
   .marker-icon {
     width: 28px; height: 28px;
     border-radius: 50%;
@@ -320,7 +302,7 @@
 <div class="info-card">
   <div class="day-header">
     <span class="day-num">D1</span>
-    <h3 style="margin:0">6.4（周四）| 抵达 + 配镜</h3>
+    <h3 style="margin:0">6.4（周四）| 抵达 + 配镜 + 银座晚餐</h3>
   </div>
   <table>
     <thead><tr><th>时间</th><th>安排</th><th>雨天</th></tr></thead>
@@ -330,7 +312,7 @@
       <tr><td>15:45</td><td>酒店寄存行李 / check-in（15:00 起可正式 check-in）</td><td>—</td></tr>
       <tr><td>16:00</td><td>金子眼镜並木通り店（11:00-20:00，火曜定休 — 步行 5 min）</td><td>—</td></tr>
       <tr><td>17:00</td><td>999.9 银座本店配镜 <span class="tag">🎫 已预约 17:00</span></td><td>—</td></tr>
-      <tr><td>18:30</td><td>银座晚餐——GINZA SIX / 东急 PLAZA 食堂层，或预约的寿司 / 炉端烧</td><td>全在商场内，不受影响 ✓</td></tr>
+      <tr><td>18:30</td><td>银座晚餐——<strong>提前预约叙叙苑 GINZA SIX 店</strong>（冲绳风格烤肉，有儿童椅），如售罄改一风堂银座店（亲子友好，不预约排队约 15min）</td><td>全在商场内，不受影响 ✓</td></tr>
     </tbody>
   </table>
 </div>
@@ -411,7 +393,7 @@
       <tr><td>17:20</td><td>✈️ JL089 回上海</td><td>—</td></tr>
     </tbody>
   </table>
-  <div class="note">押上站投币柜大号行李箱 ¥700/日，大件下周末可能满，建议水族馆前先找空位。行李直接从押上走,省去回银座来回约 1 小时。</div>
+  <div class="bright">押上站投币柜大号行李箱 ¥700/日，大件下周末可能满，建议水族馆前先找空位。行李直接从押上走,省去回银座来回约 1 小时。</div>
 </div>
 
 <!-- GLASSES -->
@@ -430,6 +412,7 @@
     </div>
   </div>
   <div class="note" style="margin-top:1rem">建议先 999.9（时段不等人），出来走两条街到金子。带上现有眼镜对比度数。</div>
+  <div class="warn" style="margin-top:0.5rem">⚠ 如 JL080 晚点超过 60 分钟，999.9 银座本店改为去 <strong>GINZA SIX 的 999.9 门店</strong>（无需预约，同款验光服务）。金子眼镜推迟到次日 D2 午睡后 15:30-16:30 去。</div>
 </div>
 
 <!-- RESTAURANTS -->
@@ -485,9 +468,9 @@
   <ul class="checklist">
     <li>999.9 银座本店 — 6.4 周四 17:00（已预约 ✅）</li>
     <li>东京玩具美术馆 e-tix.jp 事前预约 — 6.7 周日（⚠ 事前预约制，无当日券）</li>
-    <li>Sunshine 水族馆网上购票 — 6.6 周六</li>
+    <li>Sunshine 水族馆网上购票 — 6.7 周日<br><span style="color:#7f8c8d;font-size:0.85rem">如售罄：改上午浅草（浅草寺+仲见世通，雨天能走），下午玩具美术馆</span></li>
     <li>三鹰之森吉卜力美术馆 — 6.5 周五 11:00（已订 ✅）</li>
-    <li>墨田水族馆网上购票 — 6.8 周一</li>
+    <li>墨田水族馆网上购票 — 6.8 周一<br><span style="color:#7f8c8d;font-size:0.85rem">如售罄：改上午浅草→押上半日闲逛，12:00 直接去机场</span></li>
   </ul>
 </div>
 
@@ -517,10 +500,10 @@
   };
 
   var locations = [
-    // D1
+    // D1: 筑地已砍，顺序：酒店 → 金子 → 999.9
     { day:'d1', name:'银座名铁穆瑟酒店', emoji:'🏨', lat:35.6720, lng:139.7640, note:'住宿基地，银座站旁' },
-    { day:'d1', name:'999.9 银座本店', emoji:'👓', lat:35.6725, lng:139.7655, note:'6.4 17:00 已预约 ✅' },
-    { day:'d1', name:'金子眼镜 並木通り', emoji:'👓', lat:35.6716, lng:139.7668, note:'不用预约，11:00-20:00，火曜定休' },
+    { day:'d1', name:'金子眼镜 並木通り', emoji:'👓', lat:35.6716, lng:139.7668, note:'16:00，不用预约，火曜定休' },
+    { day:'d1', name:'999.9 银座本店', emoji:'👓', lat:35.6725, lng:139.7655, note:'6.4 17:00 已预约', special:true },
     // D2
     { day:'d2', name:'三鹰吉卜力美术馆', emoji:'🏛️', lat:35.6962, lng:139.5701, note:'6.5 11:00 已订', special:true },
     { day:'d2', name:'口琴横丁', emoji:'🍢', lat:35.7040, lng:139.5810, note:'吉祥寺老商店街，有顶棚' },
@@ -533,11 +516,12 @@
     { day:'d4', name:'日暮里站', emoji:'🚉', lat:35.7285, lng:139.7720, note:'JR山手线，谷根千入口' },
     { day:'d4', name:'谷中銀座', emoji:'🛍️', lat:35.7275, lng:139.7660, note:'炸肉饼、猫咪甜甜圈、手工仙贝' },
     { day:'d4', name:'根津神社', emoji:'⛩️', lat:35.7198, lng:139.7605, note:'赤红鸟居隧道，人少安静' },
-    { day:'d4', name:'东京玩具美术馆', emoji:'🧸', lat:35.6885, lng:139.7220, note:'四谷三丁目，开到16:00', special:true },
-    // D5
-    { day:'d5', name:'墨田水族馆', emoji:'🐧', lat:35.7100, lng:139.8100, note:'Skytree脚下，水母&企鹅' },
+    { day:'d4', name:'东京玩具美术馆', emoji:'🧸', lat:35.6885, lng:139.7220, note:'四谷三丁目，e-tix事前预约', special:true },
+    // D5: 新路线——押上存行李+直接去羽田
+    { day:'d5', name:'墨田水族馆', emoji:'🐧', lat:35.7100, lng:139.8100, note:'10:00开门即入，水母&企鹅' },
     { day:'d5', name:'Solamachi', emoji:'🛍️', lat:35.7105, lng:139.8120, note:'Skytree楼下商场，午饭' },
-    { day:'d5', name:'羽田机场 T3', emoji:'✈️', lat:35.5494, lng:139.7798, note:'6.8 JL089 17:20返程', special:true },
+    { day:'d5', name:'押上站', emoji:'🚉', lat:35.7107, lng:139.8115, note:'行李投币柜 ¥700/日' },
+    { day:'d5', name:'羽田机场 T3', emoji:'✈️', lat:35.5494, lng:139.7798, note:'16:20截止 check-in', special:true },
   ];
 
   var markerGroup = {};
@@ -567,7 +551,6 @@
   });
 
   // Build legend
-  var legendHtml = '<span style="font-weight:600;margin-right:0.3rem">按天筛选：</span>';
   var allItem = document.createElement('span');
   allItem.className = 'legend-item';
   allItem.innerHTML = '<span class="legend-dot" style="background:#555"></span>全部';
@@ -600,7 +583,6 @@
     document.querySelectorAll('.legend-item[data-day]').forEach(function(el) {
       if (el.getAttribute('data-day') === day) el.classList.remove('dimmed'); else el.classList.add('dimmed');
     });
-    // Fit bounds to visible markers
     var group = L.featureGroup(markerGroup[day]);
     if (group.getBounds().isValid()) map.fitBounds(group.getBounds().pad(0.15));
     else map.setView([35.688, 139.75], 12);
